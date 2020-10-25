@@ -1,17 +1,51 @@
 <table class="table">
-	<tr><%= attachment_image_tag(current_user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
+	<tr><%= attachment_image_tag(user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
 
 	<tr>
 		<th>name</th>
-		<th><%= current_user.name %></th>
+		<th><%= user.name %></th>
 	</tr>
 
 	<tr>
 		<th>introduction</th>
-		<th><%= current_user.introduction %></th>
+		<th><%= user.introduction %></th>
+	</tr>
+	<tr>
+		<th>follows</th>
+		<th>
+
+        <strong id="following" class="stat">
+          <%= user.followings.count %>
+        </strong>
+
+		</th>
+	</tr>
+	<tr>
+		<th>followers</th>
+		<th>
+
+        <strong id="followers" class="stat">
+          <%= user.followers.count %>
+        </strong>
+		</th>
 	</tr>
 </table>
 
 <div class="row">
+<% unless current_user == user %>
+  <% if current_user.following?(user) %>
+    <%= form_with(model: current_user.active_relationships.find_by(followed_id: user.id),method: :delete, local: true) do |f| %>
+      <%= f.submit "フォロー外す", class: "btn btn-outline-secondary" %>
+    <% end %>
+  <% else %>
+    <%= form_with(model: current_user.active_relationships.build, local: true) do |f| %>
+      <%= f.hidden_field :followed_id, value: user.id %>
+        <%= f.submit "フォローする", class: "btn btn-outline-secondary" %>
+    <% end %>
+  <% end %>
+
+
+<% else %>
 	<%= link_to '', edit_user_path(current_user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{current_user.id}" %>
+<% end %>
 </div>
