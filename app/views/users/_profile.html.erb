@@ -13,19 +13,16 @@
 	<tr>
 		<th>follows</th>
 		<th>
-
-        <strong id="following" class="stat">
-          <%= user.followings.count %>
+      <strong id="following" class="stat">
+          <%= link_to user.followings.count, followings_user_path(user) %>
         </strong>
-
-		</th>
+    </th>
 	</tr>
 	<tr>
 		<th>followers</th>
 		<th>
-
-        <strong id="followers" class="stat">
-          <%= user.followers.count %>
+      <strong id="followers" class="stat">
+          <%= link_to user.followers.count, followers_user_path(user) %>
         </strong>
 		</th>
 	</tr>
